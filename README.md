@@ -42,6 +42,8 @@ In this task, you will deploy three virtual machines, each into a separate virtu
 
 4. In the toolbar of the Cloud Shell pane, click the **Upload/Download files** icon, in the drop-down menu, click **Upload** and upload the files **\Allfiles\Labs\05\az104-05-vnetvm-loop-template.json** and **\Allfiles\Labs\05\az104-05-vnetvm-loop-parameters.json** into the Cloud Shell home directory.
 
+   ![](img/img01.PNG)
+
 5. Edit the **Parameters** file you just uploaded and change the password. If you need help editing the file in the Shell please ask your instructor for assistance. As a best practice, secrets, like passwords, should be more securely stored in the Key Vault.
 
 6. From the Cloud Shell pane, run the following to create the resource group that will be hosting the lab environment. The first two virtual networks and a pair of virtual machines will be deployed in [Azure_region_1]. The third virtual network and the third virtual machine will be deployed in the same resource group but another [Azure_region_2]. (replace the [Azure_region_1] and [Azure_region_2] placeholder, including the square brackets, with the names of two different Azure regions where you intend to deploy these Azure virtual machines. An example is $location1 = ‘eastus’. You can use Get-AzLocation to list all locations.):
@@ -68,6 +70,8 @@ In this task, you will deploy three virtual machines, each into a separate virtu
    >
    > If the command returns no results, then you need to choose another region. Once you have identified two suitable regions, you can adjust the regions in the code block above.
 
+   ![](img/img01.PNG)
+
 7. From the Cloud Shell pane, run the following to create the three virtual networks and deploy virtual machines into them by using the template and parameter files you uploaded:
 
    CodeCopy
@@ -83,13 +87,31 @@ In this task, you will deploy three virtual machines, each into a separate virtu
 
    > **Note**: Wait for the deployment to complete before proceeding to the next step. This should take about 2 minutes.
 
+   ![](img/img02.PNG)
+
 8. Close the Cloud Shell pane.
+
+   ![](img/img03.PNG)
+
+![](img/img04.PNG)
+
+![](img/img05.PNG)
+
+![](img/img06.PNG)
+
+![](img/img07.PNG)
+
+![](img/img08.PNG)
+
+![](img/img09.PNG)
 
 #### Task 2: Configure local and global virtual network peering
 
 In this task, you will configure local and global peering between the virtual networks you deployed in the previous tasks.
 
 1. In the Azure portal, search for and select **Virtual networks**.
+
+   ![](img/img10.PNG)
 
 2. Review the virtual networks you created in the previous task and verify that the first two are located in the same Azure region and the third one in a different Azure region.
 
@@ -98,6 +120,8 @@ In this task, you will configure local and global peering between the virtual ne
 3. In the list of virtual networks, click **az104-05-vnet0**.
 
 4. On the **az104-05-vnet0** virtual network blade, in the **Settings** section, click **Peerings** and then click **+ Add**.
+
+   ![](img/img11.PNG)
 
 5. Add a peering with the following settings (leave others with their default values) and click **Add**:
 
@@ -133,6 +157,10 @@ In this task, you will configure local and global peering between the virtual ne
    
    Add-AzVirtualNetworkPeering -Name 'az104-05-vnet1_to_az104-05-vnet0' -VirtualNetwork $vnet1 -RemoteVirtualNetworkId $vnet0.Id
    ```
+
+   ![](img/img12.PNG)
+
+   ![](img/img13.PNG)
 
 6. On the **az104-05-vnet0** virtual network blade, in the **Settings** section, click **Peerings** and then click **+ Add**.
 
@@ -170,6 +198,12 @@ In this task, you will configure local and global peering between the virtual ne
    
    Add-AzVirtualNetworkPeering -Name 'az104-05-vnet2_to_az104-05-vnet0' -VirtualNetwork $vnet2 -RemoteVirtualNetworkId $vnet0.Id
    ```
+
+   ![](img/img16.PNG)
+
+   ![](img/img17.PNG)
+
+   ![](img/img18.PNG)
 
 8. Navigate back to the **Virtual networks** blade and, in the list of virtual networks, click **az104-05-vnet1**.
 
@@ -210,6 +244,12 @@ In this task, you will configure local and global peering between the virtual ne
     Add-AzVirtualNetworkPeering -Name 'az104-05-vnet2_to_az104-05-vnet1' -VirtualNetwork $vnet2 -RemoteVirtualNetworkId $vnet1.Id
     ```
 
+![](img/img19.PNG)
+
+![](img/img20.PNG)
+
+![](img/img21.PNG)
+
 #### Task 3: Test intersite connectivity
 
 In this task, you will test connectivity between virtual machines on the three virtual networks that you connected via local and global peering in the previous task.
@@ -228,6 +268,8 @@ In this task, you will test connectivity between virtual machines on the three v
 
 5. Within the Remote Desktop session to **az104-05-vm0**, right-click the **Start** button and, in the right-click menu, click **Windows PowerShell (Admin)**.
 
+   ![](img/img23.PNG)
+
 6. In the Windows PowerShell console window, run the following to test connectivity to **az104-05-vm1** (which has the private IP address of **10.51.0.4**) over TCP port 3389:
 
    CodeCopy
@@ -238,6 +280,8 @@ In this task, you will test connectivity between virtual machines on the three v
 
    > **Note**: The test uses TCP 3389 since this is this port is allowed by default by operating system firewall.
 
+   ![](img/img24.PNG)
+
 7. Examine the output of the command and verify that the connection was successful.
 
 8. In the Windows PowerShell console window, run the following to test connectivity to **az104-05-vm2** (which has the private IP address of **10.52.0.4**):
@@ -247,6 +291,8 @@ In this task, you will test connectivity between virtual machines on the three v
    ```powershell
    Test-NetConnection -ComputerName 10.52.0.4 -Port 3389 -InformationLevel 'Detailed'
    ```
+
+   ![](img/img25.PNG)
 
 9. Switch back to the Azure portal on your lab computer and navigate back to the **Virtual machines** blade.
 
@@ -271,6 +317,8 @@ In this task, you will test connectivity between virtual machines on the three v
     ```
 
     > **Note**: The test uses TCP 3389 since this is this port is allowed by default by operating system firewall.
+
+    ![](img/img26.PNG)
 
 15. Examine the output of the command and verify that the connection was successful.
 
